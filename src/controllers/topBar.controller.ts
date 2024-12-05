@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { LayoutController } from "./layout.controller";
+import { showToast } from "@/utils/general";
 
 export class TopBarController {
   public showJson = ref<boolean>(false);
@@ -58,7 +59,12 @@ export class TopBarController {
     reader.onload = (event) => {
       if (event.target) {
         const result = event.target.result as string;
-        this.layoutController?.convertJsonToLif(result);
+        try{
+          this.layoutController?.convertJsonToLif(result);
+        } catch (error) {
+          console.error("Error parsing file", error);
+          showToast("Error", "Error parsing file");
+        }
       }
     };
 

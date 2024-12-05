@@ -180,6 +180,8 @@ export class LayoutController {
       return;
     }
 
+    const isEditing = this.nodes.hasOwnProperty(node.nodeId);
+
     this.nodes[node.nodeId] = JSON.parse(
       JSON.stringify({
         name: node.nodeName,
@@ -207,6 +209,8 @@ export class LayoutController {
       x: this.layouts.nodes[node.nodeId].x,
       y: -this.layouts.nodes[node.nodeId].y,
     };
+
+    showToast("Success", isEditing ? "Node successfully edited" : "Node successfully created");
   }
 
   createStation(station: Station) {
@@ -282,6 +286,9 @@ export class LayoutController {
     );
     if (layoutIndex !== -1) {
       this.vdaLayouts[layoutIndex] = layout;
+    } else if (layout.layoutId === ""){
+        showToast("Error", "Layout ID cannot be empty");
+        return;
     } else {
       this.vdaLayouts.push({
         layoutId: layout.layoutId,
